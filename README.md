@@ -85,9 +85,7 @@ CSV / JSON                     Azure SQL Database
 
 ### Evidencia de arquitectura
 
-![image_1790264927029.png](./image_1790264927029.png "image_1790264927029.png")
-Arquitectura Lakehouse ElectroCasa
-
+![Arquitectura Lakehouse ElectroCasa](docs/images/image_1790264927029.png)
 ---
 
 ## 3. Fuentes de datos
@@ -806,8 +804,7 @@ Update 1ecad7 is COMPLETED
 
 ### Evidencia
 
-![Pipeline PROD ejecutado correctamente](./image_1790264060508.png "image_1790264060508.png")
-Pipeline PROD ejecutado correctamente
+![Pipeline PROD ejecutado correctamente](docs/images/image_1790264060508.png)
 
 ---
 
@@ -829,9 +826,7 @@ Esto confirma que tanto el pipeline como la validación posterior terminaron cor
 
 ### Evidencia
 
-![image_1790264303663.png](./image_1790264303663.png "image_1790264303663.png")
-
-Job PROD ejecutado correctamente
+![Job PROD ejecutado correctamente](docs/images/image_1790264303663.png)
 
 ---
 
