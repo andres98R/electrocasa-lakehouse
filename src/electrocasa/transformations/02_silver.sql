@@ -541,10 +541,27 @@ WHERE rn = 1;
 -- 7. EMPLEADOS SILVER
 -- Historizacion tipo SCD2.
 -- ============================================================
-
 CREATE OR REFRESH MATERIALIZED VIEW
 silver.empleados_silver_ldp
-COMMENT 'Historial SCD Tipo 2 de empleados'
+(
+    id_empleado STRING,
+    nombre STRING,
+    dni STRING MASK ${electrocasa_catalog}.silver.mask_dni,
+    email STRING,
+    salario DECIMAL(18,2) MASK ${electrocasa_catalog}.silver.mask_salario,
+    sucursal_id STRING,
+    cargo STRING,
+    tipo_evento STRING,
+    fecha_evento DATE,
+    vigencia_desde DATE,
+    vigencia_hasta_exclusiva DATE,
+    es_actual BOOLEAN,
+    estado_empleado STRING,
+    _ingested_at TIMESTAMP,
+    _source_file STRING,
+    _batch_id STRING
+)
+COMMENT 'Historial SCD Tipo 2 de empleados con proteccion de DNI y salario'
 AS
 
 WITH dni_conflictivos AS (
