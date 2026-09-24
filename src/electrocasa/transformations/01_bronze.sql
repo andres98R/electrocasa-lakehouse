@@ -3,6 +3,7 @@
 -- CAPA BRONZE
 -- ============================================================
 
+
 -- ============================================================
 -- 1. PRODUCTOS
 -- Fuente: JSON - snapshot de baja frecuencia
@@ -10,7 +11,7 @@
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.bronze.productos_bronze_ldp
+bronze.productos_bronze_ldp
 COMMENT 'Bronze de catálogo de productos desde JSON'
 AS
 SELECT
@@ -27,7 +28,7 @@ SELECT
     ) AS _batch_id
 
 FROM read_files(
-    '/Volumes/electrocasa_dev/bronze/landing/productos/',
+    '/Volumes/${electrocasa_catalog}/bronze/landing/productos/',
     format => 'json',
     multiLine => true,
     inferColumnTypes => false
@@ -41,7 +42,7 @@ FROM read_files(
 -- ============================================================
 
 CREATE OR REFRESH STREAMING TABLE
-electrocasa_dev.bronze.ventas_bronze_ldp
+bronze.ventas_bronze_ldp
 COMMENT 'Bronze incremental de ventas por sucursal'
 AS
 SELECT
@@ -58,7 +59,7 @@ SELECT
     ) AS _batch_id
 
 FROM STREAM read_files(
-    '/Volumes/electrocasa_dev/bronze/landing/ventas/',
+    '/Volumes/${electrocasa_catalog}/bronze/landing/ventas/',
     format => 'csv',
     header => true,
     inferColumnTypes => false
@@ -72,7 +73,7 @@ FROM STREAM read_files(
 -- ============================================================
 
 CREATE OR REFRESH STREAMING TABLE
-electrocasa_dev.bronze.devoluciones_bronze_ldp
+bronze.devoluciones_bronze_ldp
 COMMENT 'Bronze incremental de devoluciones'
 AS
 SELECT
@@ -89,7 +90,7 @@ SELECT
     ) AS _batch_id
 
 FROM STREAM read_files(
-    '/Volumes/electrocasa_dev/bronze/landing/devoluciones/',
+    '/Volumes/${electrocasa_catalog}/bronze/landing/devoluciones/',
     format => 'csv',
     header => true,
     inferColumnTypes => false
@@ -103,7 +104,7 @@ FROM STREAM read_files(
 -- ============================================================
 
 CREATE OR REFRESH STREAMING TABLE
-electrocasa_dev.bronze.resenas_bronze_ldp
+bronze.resenas_bronze_ldp
 COMMENT 'Bronze incremental de reseñas de clientes'
 AS
 SELECT
@@ -120,7 +121,7 @@ SELECT
     ) AS _batch_id
 
 FROM STREAM read_files(
-    '/Volumes/electrocasa_dev/bronze/landing/resenas/',
+    '/Volumes/${electrocasa_catalog}/bronze/landing/resenas/',
     format => 'json',
     multiLine => true,
     inferColumnTypes => false
@@ -134,7 +135,7 @@ FROM STREAM read_files(
 -- ============================================================
 
 CREATE OR REFRESH STREAMING TABLE
-electrocasa_dev.bronze.empleados_bronze_ldp
+bronze.empleados_bronze_ldp
 COMMENT 'Bronze de eventos de empleados de RRHH'
 AS
 SELECT
@@ -151,7 +152,7 @@ SELECT
     ) AS _batch_id
 
 FROM STREAM read_files(
-    '/Volumes/electrocasa_dev/bronze/landing/empleados/',
+    '/Volumes/${electrocasa_catalog}/bronze/landing/empleados/',
     format => 'csv',
     header => true,
     inferColumnTypes => false
@@ -166,7 +167,7 @@ FROM STREAM read_files(
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.bronze.tracking_bronze_ldp
+bronze.tracking_bronze_ldp
 COMMENT 'Bronze de tracking desde Azure SQL mediante Lakehouse Federation'
 AS
 SELECT

@@ -16,7 +16,7 @@
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.productos_silver_ldp
+silver.productos_silver_ldp
 COMMENT 'Productos limpios, estandarizados y deduplicados'
 AS
 
@@ -51,7 +51,7 @@ WITH productos_limpios AS (
         _source_file,
         _batch_id
 
-    FROM electrocasa_dev.bronze.productos_bronze_ldp
+    FROM bronze.productos_bronze_ldp
 ),
 
 productos_validos AS (
@@ -101,7 +101,7 @@ WHERE rn = 1;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.audit.ventas_quarantine_ldp
+audit.ventas_quarantine_ldp
 COMMENT 'Ventas rechazadas por reglas criticas de calidad'
 AS
 
@@ -126,7 +126,7 @@ WITH ventas_evaluadas AS (
         _source_file,
         _batch_id
 
-    FROM electrocasa_dev.bronze.ventas_bronze_ldp
+    FROM bronze.ventas_bronze_ldp
 )
 
 SELECT
@@ -186,7 +186,7 @@ WHERE
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.ventas_validas_ldp
+silver.ventas_validas_ldp
 (
     CONSTRAINT monto_total_positivo
         EXPECT (monto_total > 0)
@@ -271,7 +271,7 @@ SELECT
     _source_file,
     _batch_id
 
-FROM electrocasa_dev.bronze.ventas_bronze_ldp;
+FROM bronze.ventas_bronze_ldp;
 
 
 -- ============================================================
@@ -280,7 +280,7 @@ FROM electrocasa_dev.bronze.ventas_bronze_ldp;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.ventas_silver_ldp
+silver.ventas_silver_ldp
 COMMENT 'Ventas Silver limpias y deduplicadas'
 AS
 
@@ -294,7 +294,7 @@ WITH ventas_rankeadas AS (
             ORDER BY _ingested_at DESC
         ) AS rn
 
-    FROM electrocasa_dev.silver.ventas_validas_ldp
+    FROM silver.ventas_validas_ldp
 )
 
 SELECT
@@ -320,14 +320,14 @@ WHERE rn = 1;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.devoluciones_silver_ldp
+silver.devoluciones_silver_ldp
 COMMENT 'Devoluciones limpias, validadas y deduplicadas'
 AS
 
 WITH productos_catalogo AS (
 
     SELECT DISTINCT producto_id
-    FROM electrocasa_dev.bronze.productos_bronze_ldp
+    FROM bronze.productos_bronze_ldp
 
     WHERE producto_id IS NOT NULL
 ),
@@ -360,7 +360,7 @@ devoluciones_limpias AS (
         d._source_file,
         d._batch_id
 
-    FROM electrocasa_dev.bronze.devoluciones_bronze_ldp d
+    FROM bronze.devoluciones_bronze_ldp d
 
     INNER JOIN productos_catalogo p
         ON trim(d.producto_id) = p.producto_id
@@ -412,7 +412,7 @@ WHERE rn = 1;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.resenas_silver_ldp
+silver.resenas_silver_ldp
 COMMENT 'Reseñas limpias, normalizadas y deduplicadas'
 AS
 
@@ -420,7 +420,7 @@ WITH productos_catalogo AS (
 
     SELECT DISTINCT producto_id
 
-    FROM electrocasa_dev.bronze.productos_bronze_ldp
+    FROM bronze.productos_bronze_ldp
 
     WHERE producto_id IS NOT NULL
 ),
@@ -462,7 +462,7 @@ resenas_parseadas AS (
         r._source_file,
         r._batch_id
 
-    FROM electrocasa_dev.bronze.resenas_bronze_ldp r
+    FROM bronze.resenas_bronze_ldp r
 
     INNER JOIN productos_catalogo p
         ON trim(r.producto_id) = p.producto_id
@@ -543,7 +543,7 @@ WHERE rn = 1;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.empleados_silver_ldp
+silver.empleados_silver_ldp
 COMMENT 'Historial SCD Tipo 2 de empleados'
 AS
 
@@ -552,7 +552,7 @@ WITH dni_conflictivos AS (
     SELECT
         trim(dni) AS dni
 
-    FROM electrocasa_dev.bronze.empleados_bronze_ldp
+    FROM bronze.empleados_bronze_ldp
 
     WHERE dni IS NOT NULL
       AND trim(dni) <> ''
@@ -596,7 +596,7 @@ empleados_limpios AS (
         e._source_file,
         e._batch_id
 
-    FROM electrocasa_dev.bronze.empleados_bronze_ldp e
+    FROM bronze.empleados_bronze_ldp e
 
     LEFT JOIN dni_conflictivos d
         ON trim(e.dni) = d.dni
@@ -699,7 +699,7 @@ FROM historial;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.silver.tracking_silver_ldp
+silver.tracking_silver_ldp
 COMMENT 'Tracking normalizado y deduplicado'
 AS
 
@@ -762,7 +762,7 @@ WITH tracking_limpio AS (
         _source_system,
         _batch_id
 
-    FROM electrocasa_dev.bronze.tracking_bronze_ldp
+    FROM bronze.tracking_bronze_ldp
 ),
 
 tracking_validos AS (

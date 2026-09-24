@@ -9,9 +9,7 @@ variables:
     description: Catalogo de Unity Catalog para ElectroCasa
     default: electrocasa_dev
 
-  validation_query_id:
-    description: ID de la consulta SQL de validacion post pipeline
-    default: "2460682667762745"
+  
 
   sql_warehouse_id:
     description: ID del SQL Warehouse utilizado por el Job
@@ -27,7 +25,7 @@ targets:
 
     variables:
       catalog: electrocasa_dev
-      validation_query_id: "2460682667762745"
+      
       sql_warehouse_id: "90d477fcb3c8c8bd"
 
   prod:
@@ -38,5 +36,5 @@ targets:
 
     variables:
       catalog: electrocasa_prod
-      validation_query_id: "2460682667762745"
+      
       sql_warehouse_id: "90d477fcb3c8c8bd"

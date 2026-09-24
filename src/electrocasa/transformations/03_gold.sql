@@ -10,7 +10,7 @@
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.gold.ventas_mensuales_sucursal_ldp
+gold.ventas_mensuales_sucursal_ldp
 COMMENT 'Ventas, unidades y ticket promedio por sucursal y mes'
 AS
 
@@ -40,7 +40,7 @@ SELECT
         2
     ) AS ticket_promedio
 
-FROM electrocasa_dev.silver.ventas_silver_ldp
+FROM silver.ventas_silver_ldp
 
 WHERE fecha_venta IS NOT NULL
 
@@ -57,7 +57,7 @@ GROUP BY
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.gold.productos_mas_vendidos_ldp
+gold.productos_mas_vendidos_ldp
 COMMENT 'Ranking de productos por unidades vendidas'
 AS
 
@@ -93,9 +93,9 @@ WITH base AS (
             2
         ) AS monto_vendido
 
-    FROM electrocasa_dev.silver.ventas_silver_ldp v
+    FROM silver.ventas_silver_ldp v
 
-    LEFT JOIN electrocasa_dev.silver.productos_silver_ldp p
+    LEFT JOIN silver.productos_silver_ldp p
         ON v.producto_id = p.producto_id
 
     GROUP BY
@@ -138,7 +138,7 @@ FROM base;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.gold.productos_mas_devueltos_ldp
+gold.productos_mas_devueltos_ldp
 COMMENT 'Ranking de productos con mayor cantidad de devoluciones'
 AS
 
@@ -171,9 +171,9 @@ WITH base AS (
             2
         ) AS monto_total_reembolsado
 
-    FROM electrocasa_dev.silver.devoluciones_silver_ldp d
+    FROM silver.devoluciones_silver_ldp d
 
-    LEFT JOIN electrocasa_dev.silver.productos_silver_ldp p
+    LEFT JOIN silver.productos_silver_ldp p
         ON d.producto_id = p.producto_id
 
     GROUP BY
@@ -215,7 +215,7 @@ FROM base;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.gold.dotacion_activa_sucursal_ldp
+gold.dotacion_activa_sucursal_ldp
 COMMENT 'Dotación actual activa por sucursal'
 AS
 
@@ -236,7 +236,7 @@ SELECT
         2
     ) AS masa_salarial
 
-FROM electrocasa_dev.silver.empleados_silver_ldp
+FROM silver.empleados_silver_ldp
 
 WHERE es_actual = TRUE
   AND estado_empleado = 'activo'
@@ -252,7 +252,7 @@ GROUP BY sucursal_id;
 -- ============================================================
 
 CREATE OR REFRESH MATERIALIZED VIEW
-electrocasa_dev.gold.resenas_negativas_categoria_ldp
+gold.resenas_negativas_categoria_ldp
 COMMENT 'Tasa de reseñas negativas por categoría de producto'
 AS
 
@@ -290,9 +290,9 @@ SELECT
         2
     ) AS calificacion_promedio
 
-FROM electrocasa_dev.silver.resenas_silver_ldp r
+FROM silver.resenas_silver_ldp r
 
-LEFT JOIN electrocasa_dev.silver.productos_silver_ldp p
+LEFT JOIN silver.productos_silver_ldp p
     ON r.producto_id = p.producto_id
 
 GROUP BY

@@ -6,9 +6,10 @@ resources:
       catalog: ${var.catalog}
       schema: default
 
+      configuration:
+        electrocasa_catalog: ${var.catalog}
+
       serverless: true
-      development: true
-      continuous: false
 
       root_path: ../src/electrocasa
 

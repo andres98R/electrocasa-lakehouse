@@ -19,10 +19,14 @@ resources:
             - task_key: run_electrocasa_pipeline
 
           sql_task:
-            query:
-              query_id: ${var.validation_query_id}
+            file:
+              path: ${workspace.file_path}/src/electrocasa/validations/validacion_post_pipeline.sql
+              source: WORKSPACE
 
             warehouse_id: ${var.sql_warehouse_id}
+
+            parameters:
+              catalog: ${var.catalog}
 
           max_retries: 2
           min_retry_interval_millis: 120000
