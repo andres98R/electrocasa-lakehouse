@@ -1,0 +1,42 @@
+bundle:
+  name: electrocasa-lakehouse
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Catalogo de Unity Catalog para ElectroCasa
+    default: electrocasa_dev
+
+  validation_query_id:
+    description: ID de la consulta SQL de validacion post pipeline
+    default: "2460682667762745"
+
+  sql_warehouse_id:
+    description: ID del SQL Warehouse utilizado por el Job
+    default: "90d477fcb3c8c8bd"
+
+targets:
+  dev:
+    mode: development
+    default: true
+
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+
+    variables:
+      catalog: electrocasa_dev
+      validation_query_id: "2460682667762745"
+      sql_warehouse_id: "90d477fcb3c8c8bd"
+
+  prod:
+    mode: production
+
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+
+    variables:
+      catalog: electrocasa_prod
+      validation_query_id: "2460682667762745"
+      sql_warehouse_id: "90d477fcb3c8c8bd"

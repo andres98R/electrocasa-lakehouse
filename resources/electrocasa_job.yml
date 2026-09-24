@@ -1,0 +1,34 @@
+resources:
+  jobs:
+    electrocasa_job:
+      name: "ElectroCasa Job - ${bundle.target}"
+
+      tasks:
+        - task_key: run_electrocasa_pipeline
+
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.electrocasa_pipeline.id}
+
+          max_retries: 2
+          min_retry_interval_millis: 300000
+          retry_on_timeout: false
+
+        - task_key: validacion_post_pipeline
+
+          depends_on:
+            - task_key: run_electrocasa_pipeline
+
+          sql_task:
+            query:
+              query_id: ${var.validation_query_id}
+
+            warehouse_id: ${var.sql_warehouse_id}
+
+          max_retries: 2
+          min_retry_interval_millis: 120000
+          retry_on_timeout: false
+
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?"
+        timezone_id: "America/Lima"
+        pause_status: UNPAUSED

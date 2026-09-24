@@ -1,0 +1,17 @@
+resources:
+  pipelines:
+    electrocasa_pipeline:
+      name: "ElectroCasa Lakehouse Pipeline - ${bundle.target}"
+
+      catalog: ${var.catalog}
+      schema: default
+
+      serverless: true
+      development: true
+      continuous: false
+
+      root_path: ../src/electrocasa
+
+      libraries:
+        - glob:
+            include: ../src/electrocasa/transformations/**
